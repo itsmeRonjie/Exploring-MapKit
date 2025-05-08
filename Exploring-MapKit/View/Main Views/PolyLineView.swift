@@ -51,6 +51,7 @@ struct PolyLineView: View {
     }
     
     @State private var strokeIndex = 0
+    @State private var colorIndex = 0
 
     let gradient = Gradient(colors: [.red, .green, .blue])
     var style: StrokeStyle {
@@ -60,22 +61,59 @@ struct PolyLineView: View {
         strokeStyles[strokeIndex % strokeStyles.count].name
     }
     
+    let colorList: [Color] = [
+        .red,
+        .blue,
+        .green,
+        .brown,
+        .purple
+    ]
+    
+    var color: Color {
+        colorList[colorIndex % strokeStyles.count]
+    }
+    
+    var locIndice: [(Int, Locations)] {
+        Array(zip(
+            Locations.locationsInSpain.indices,
+            Locations.locationsInSpain
+        ))
+    }
+    
+    
     var body: some View {
-        Map {
-            ForEach(Locations.locationsInSpain) { location in
-                Marker(
-                    location.name,
-                    coordinate: location.coordinate
-                )
-                .tint(.blue)
+        ZStack {
+            Map {
+                ForEach(locIndice, id: \.0) { i, location in
+                    Marker(
+                        location.name,
+                        coordinate: location.coordinate
+                    )
+                    .tint(colorList[i % colorList.count])
+                }
+                
+                MapPolyline(coordinates: Locations.locationsInSpain.coordinates)
+                    .stroke(gradient, style: style)
             }
-            
-            MapPolyline(coordinates: Locations.locationsInSpain.coordinates)
-                .stroke(gradient, style: style)
+            Title
         }
         .onTapGesture {
-            strokeIndex += 1
+            withAnimation {
+                strokeIndex += 1
+                colorIndex += 1
+            }
         }
+    }
+    
+    private var Title: some View {
+        Text("Current Style: \(currentStyleName)")
+            .padding()
+            .background(.black.opacity(0.5).gradient)
+            .foregroundStyle(.white)
+            .bold()
+            .clipShape(.rect(cornerRadius: 8))
+            .padding()
+            .frame(maxHeight: .infinity, alignment: .top)
     }
 }
 
