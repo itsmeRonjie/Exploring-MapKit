@@ -22,6 +22,12 @@ struct Locations: Identifiable {
     }
 }
 
+extension Array where Element == Locations {
+    var coordinates: [CLLocationCoordinate2D] {
+        self.map { $0.coordinate }
+    }
+}
+
 extension Locations {
     static let monteSantiago = Locations(
         name: "Monte Santiago",
