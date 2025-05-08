@@ -18,8 +18,11 @@ struct LookAroundView: View {
     var body: some View {
         ZStack {
             if let scene = lookAroundScene {
-                LookAroundPreview(initialScene: scene)
-                    .overlay(alignment: .bottomTrailing) {
+                LookAroundPreview(
+                    initialScene: scene,
+                    badgePosition: .bottomTrailing
+                )
+                .overlay(alignment: .center) {
                         Text(text)
                             .font(.subheadline)
                             .foregroundStyle(.white)
@@ -36,7 +39,7 @@ struct LookAroundView: View {
                     .font(.headline)
             }
         }
-        .ignoresSafeArea(edges: [.bottom])
+        .ignoresSafeArea()
         .task {
             isLoading = true
             await getLookAroundScene()
