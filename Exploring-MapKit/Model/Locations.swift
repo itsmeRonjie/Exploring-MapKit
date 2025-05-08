@@ -104,3 +104,9 @@ extension Locations {
         .gaztelugatxe
     ]
 }
+
+extension CLLocationCoordinate2D {
+    static let weequahicPark = CLLocationCoordinate2D(latitude: 40.7063, longitude: -74.1973)
+    static let columbiaUniversity = CLLocationCoordinate2D(latitude: 40.8075, longitude: -73.9626)
+    static let paris = CLLocationCoordinate2D(latitude: 48.856788, longitude: 2.351077)
+}
